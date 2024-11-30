@@ -33,9 +33,9 @@ read_varscan_data <- function(infile){
     new_ref = paste0(r,v)
     new_ref = gsub("-","", new_ref)
     new_var = r
+    all$Ref[which_loss] = new_ref
+    all$Var[which_loss] = new_var
   }
-  all$Ref[which_loss] = new_ref
-  all$Var[which_loss] = new_var
   
   which_ins = grep("\\+", all$Var)
   if( length(which_ins) > 0 ){
