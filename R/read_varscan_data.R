@@ -43,8 +43,9 @@ read_varscan_data <- function(infile){
     v = all$Var[which_ins]
     new_var = paste0(r,v)
     new_var = gsub("\\+","", new_var)
+    all$Var[which_ins] = new_var
   }
-  all$Var[which_ins] = new_var
+
   
   return(all)
   }
