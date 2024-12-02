@@ -1,0 +1,32 @@
+name: Create Release with Submodules
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Create archive with submodules
+        run: |
+          git archive --format=zip --prefix=${GITHUB_REPOSITORY##*/}/ HEAD > release.zip
+          for submodule in $(git submodule--helper list | awk '{print $2}'); do
+            pushd $submodule
+            git archive --prefix=${GITHUB_REPOSITORY##*/}/$submodule/ HEAD >> ../release.zip
+            popd
+          done
+
+      - name: Upload release asset
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./release.zip
+          asset_name: release.zip
+          asset_content_type: application/zip
+
