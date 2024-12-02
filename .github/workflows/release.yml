@@ -21,9 +21,8 @@ jobs:
             git archive --prefix=${GITHUB_REPOSITORY##*/}/$submodule/ HEAD >> ../release.zip
             popd
           done
-
       - name: Upload release asset
-        uses: actions/upload-release-asset@v1
+        uses: actions/upload-release-asset@v2
         with:
           upload_url: ${{ github.event.release.upload_url }}
           asset_path: ./release.zip
